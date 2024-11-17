@@ -80,6 +80,4 @@ public class CurvePoint {
     public Integer getId() {
         return id;
     }
-
-    // TODO: Map columns in data table CURVEPOINT with corresponding java fields
 }
