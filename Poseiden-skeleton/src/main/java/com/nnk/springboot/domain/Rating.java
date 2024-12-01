@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Table(name = "rating")
 public class Rating {
     @Id
+    @GeneratedValue
     private Integer id;
 
     private String moodysRating;

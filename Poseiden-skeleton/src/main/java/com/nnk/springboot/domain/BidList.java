@@ -1,19 +1,19 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "bidlist")
 public class BidList {
     @Id
+    @GeneratedValue
     private Integer bidListId;
 
     private String account;

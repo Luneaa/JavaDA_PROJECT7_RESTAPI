@@ -18,6 +18,7 @@ D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\controllers\L
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\TradeRepository.java
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\RatingRepository.java
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\domain\User.java
+D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\config\UserPrincipal.java
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\domain\Rating.java
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\RatingService.java
 D:\Code\Java\P7\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\CurvePointRepository.java

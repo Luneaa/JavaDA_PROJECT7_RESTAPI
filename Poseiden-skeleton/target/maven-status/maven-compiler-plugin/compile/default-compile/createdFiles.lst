@@ -16,6 +16,7 @@ com\nnk\springboot\controllers\HomeController.class
 com\nnk\springboot\config\CustomUserDetailsService.class
 com\nnk\springboot\domain\User.class
 com\nnk\springboot\repositories\TradeRepository.class
+com\nnk\springboot\config\UserPrincipal.class
 com\nnk\springboot\repositories\BidListRepository.class
 com\nnk\springboot\controllers\CurveController.class
 com\nnk\springboot\domain\Rating.class

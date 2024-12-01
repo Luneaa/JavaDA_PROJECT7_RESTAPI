@@ -1,6 +1,8 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.services.interfaces.IRuleNameService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 
 @Controller
+@RequiredArgsConstructor
 public class RuleNameController {
-    // TODO: Inject RuleName service
+
+    private final IRuleNameService ruleNameService;
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
     {
-        // TODO: find all RuleName, add to model
+        var ruleNames = this.ruleNameService.getRuleNames();
+
+        model.addAttribute("ruleNames", ruleNames);
+
         return "ruleName/list";
     }
 
@@ -29,26 +36,45 @@ public class RuleNameController {
 
     @PostMapping("/ruleName/validate")
     public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return RuleName list
-        return "ruleName/add";
+        this.ruleNameService.addRuleName(ruleName);
+
+        return "redirect:/ruleName/list";
     }
 
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get RuleName by Id and to model then show to the form
+        var existingRuleName = this.ruleNameService.getRuleName(id);
+        if (existingRuleName.isEmpty()) {
+            return "redirect:/errors/404";
+        }
+
+        model.addAttribute("ruleName", existingRuleName.get());
+
         return "ruleName/update";
     }
 
     @PostMapping("/ruleName/update/{id}")
     public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update RuleName and return RuleName list
+        var existingRuleName = this.ruleNameService.getRuleName(id);
+        if (existingRuleName.isEmpty()) {
+            return "redirect:/errors/404";
+        }
+
+        this.ruleNameService.updateRuleName(ruleName);
+
         return "redirect:/ruleName/list";
     }
 
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find RuleName by Id and delete the RuleName, return to Rule list
+        var existingRuleName = this.ruleNameService.getRuleName(id);
+        if (existingRuleName.isEmpty()) {
+            return "redirect:/errors/404";
+        }
+
+        this.ruleNameService.deleteRuleName(id);
+
         return "redirect:/ruleName/list";
     }
 }

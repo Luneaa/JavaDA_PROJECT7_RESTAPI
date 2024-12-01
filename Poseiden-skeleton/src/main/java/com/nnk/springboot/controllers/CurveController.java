@@ -1,6 +1,8 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.services.interfaces.ICurvePointService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 
 @Controller
+@RequiredArgsConstructor
 public class CurveController {
-    // TODO: Inject Curve Point service
+
+    private final ICurvePointService curvePointService;
 
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
-        // TODO: find all Curve Point, add to model
+        var curvePoints = this.curvePointService.getCurvePoints();
+
+        model.addAttribute("curvePoints", curvePoints);
+
         return "curvePoint/list";
     }
 
@@ -29,26 +36,45 @@ public class CurveController {
 
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Curve list
-        return "curvePoint/add";
+        this.curvePointService.addCurvePoint(curvePoint);
+
+        return "redirect:/curvePoint/list";
     }
 
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get CurvePoint by Id and to model then show to the form
+        var existingCurvePoint = this.curvePointService.getCurvePoint(id);
+        if (existingCurvePoint.isEmpty()){
+            return "redirect:/errors/404";
+        }
+
+        model.addAttribute("curvePoint", existingCurvePoint.get());
+
         return "curvePoint/update";
     }
 
     @PostMapping("/curvePoint/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Curve and return Curve list
+        var existingCurvePoint = this.curvePointService.getCurvePoint(id);
+        if (existingCurvePoint.isEmpty()){
+            return "redirect:/errors/404";
+        }
+
+        this.curvePointService.updateCurvePoint(curvePoint);
+
         return "redirect:/curvePoint/list";
     }
 
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Curve by Id and delete the Curve, return to Curve list
+        var existingCurvePoint = this.curvePointService.getCurvePoint(id);
+        if (existingCurvePoint.isEmpty()){
+            return "redirect:/errors/404";
+        }
+
+        this.curvePointService.deleteCurvePoint(id);
+
         return "redirect:/curvePoint/list";
     }
 }
