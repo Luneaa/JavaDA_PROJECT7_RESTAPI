@@ -2,9 +2,8 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.interfaces.IRatingService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,13 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.validation.Valid;
-
 @Controller
 @RequiredArgsConstructor
 public class RatingController {
 
     private final IRatingService ratingService;
+
+    private static final String REDIRECT_RATING_LIST = "redirect:/rating/list";
+    private static final String REDIRECT_ERROR_404 = "redirect:/errors/404";
 
     @RequestMapping("/rating/list")
     public String home(Model model)
@@ -39,14 +39,14 @@ public class RatingController {
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
         this.ratingService.addRating(rating);
 
-        return "redirect:/rating/list";
+        return REDIRECT_RATING_LIST;
     }
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         var rating = this.ratingService.getRating(id);
         if (rating.isEmpty()) {
-            return "redirect:/errors/404";
+            return REDIRECT_ERROR_404;
         }
 
         model.addAttribute("rating", rating.get());
@@ -60,7 +60,7 @@ public class RatingController {
         var existingRating = this.ratingService.getRating(id);
         if (existingRating.isEmpty()) {
             // User tried to update non-existing rating
-            return "redirect:/errors/404";
+            return REDIRECT_ERROR_404;
         }
 
         // No fields are mandatory so no more check needed
@@ -68,7 +68,7 @@ public class RatingController {
         // Update rating entity
         this.ratingService.updateRating(rating);
 
-        return "redirect:/rating/list";
+        return REDIRECT_RATING_LIST;
     }
 
     @GetMapping("/rating/delete/{id}")
@@ -76,11 +76,11 @@ public class RatingController {
         var existingRating = this.ratingService.getRating(id);
         if (existingRating.isEmpty()) {
             // User tried to delete non-existing rating
-            return "redirect:/errors/404";
+            return REDIRECT_ERROR_404;
         }
 
         this.ratingService.deleteRating(id);
 
-        return "redirect:/rating/list";
+        return REDIRECT_RATING_LIST;
     }
 }
