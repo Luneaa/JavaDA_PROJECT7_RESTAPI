@@ -39,7 +39,7 @@ public class BidListController {
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         this.bidListService.addBidList(bid);
 
-        return "redirect:bidList/list";
+        return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/update/{id}")
@@ -52,7 +52,7 @@ public class BidListController {
 
         model.addAttribute("bidList", bidList.get());
 
-        return "bidList/update";
+        return "redirect:/bidList/update";
     }
 
     @PostMapping("/bidList/update/{id}")

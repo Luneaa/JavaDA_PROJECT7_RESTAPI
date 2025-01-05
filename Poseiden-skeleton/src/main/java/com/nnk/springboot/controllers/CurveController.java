@@ -30,7 +30,7 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
+    public String addCurvePoint(CurvePoint bid) {
         return "curvePoint/add";
     }
 
@@ -54,7 +54,7 @@ public class CurveController {
     }
 
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
+    public String updateCurvePoint(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                              BindingResult result, Model model) {
         var existingCurvePoint = this.curvePointService.getCurvePoint(id);
         if (existingCurvePoint.isEmpty()){
@@ -67,7 +67,7 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public String deleteCurvePoint(@PathVariable("id") Integer id, Model model) {
         var existingCurvePoint = this.curvePointService.getCurvePoint(id);
         if (existingCurvePoint.isEmpty()){
             return "redirect:/errors/404";
