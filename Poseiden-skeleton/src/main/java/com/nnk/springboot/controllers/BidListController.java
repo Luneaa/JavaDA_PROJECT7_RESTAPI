@@ -18,6 +18,9 @@ import jakarta.validation.Valid;
 @RequiredArgsConstructor
 public class BidListController {
 
+    public static final String REDIRECT_ERRORS_404 = "redirect:/errors/404";
+    public static final String REDIRECT_BID_LIST_LIST = "redirect:/bidList/list";
+
     private final IBidListService bidListService;
 
     @RequestMapping("/bidList/list")
@@ -39,7 +42,7 @@ public class BidListController {
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         this.bidListService.addBidList(bid);
 
-        return "redirect:/bidList/list";
+        return REDIRECT_BID_LIST_LIST;
     }
 
     @GetMapping("/bidList/update/{id}")
@@ -47,12 +50,12 @@ public class BidListController {
         var bidList = this.bidListService.getBidList(id);
 
         if (bidList.isEmpty()) {
-            return "redirect:/errors/404";
+            return REDIRECT_ERRORS_404;
         }
 
         model.addAttribute("bidList", bidList.get());
 
-        return "redirect:/bidList/update";
+        return "/bidList/update";
     }
 
     @PostMapping("/bidList/update/{id}")
@@ -60,23 +63,23 @@ public class BidListController {
                              BindingResult result, Model model) {
         var existingBidList = this.bidListService.getBidList(id);
         if (existingBidList.isEmpty()) {
-            return "redirect:/errors/404";
+            return REDIRECT_ERRORS_404;
         }
 
         this.bidListService.updateBidList(bidList);
 
-        return "redirect:/bidList/list";
+        return REDIRECT_BID_LIST_LIST;
     }
 
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         var bidList = this.bidListService.getBidList(id);
         if (bidList.isEmpty()) {
-            return "redirect:/errors/404";
+            return REDIRECT_ERRORS_404;
         }
 
         this.bidListService.deleteBidList(id);
 
-        return "redirect:/bidList/list";
+        return REDIRECT_BID_LIST_LIST;
     }
 }
