@@ -28,7 +28,6 @@ public class CurvePointService implements ICurvePointService {
     }
 
     public CurvePoint addCurvePoint(CurvePoint curvePoint) {
-        curvePoint.setCurveId(-1);
         return this.curvePointRepository.save(curvePoint);
     }
 
