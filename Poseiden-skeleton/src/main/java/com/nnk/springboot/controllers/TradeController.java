@@ -13,12 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 
+/**
+ * Controller for trade
+ */
 @Controller
 @RequiredArgsConstructor
 public class TradeController {
 
     private final ITradeService tradeService;
 
+    /**
+     * Displays the list of trades
+     * @param model Spring model
+     * @return trade list url
+     */
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
@@ -29,11 +37,23 @@ public class TradeController {
         return "trade/list";
     }
 
+    /**
+     * Displays the add form for trades
+     * @param bid _
+     * @return trades add form url
+     */
     @GetMapping("/trade/add")
     public String addUser(Trade bid) {
         return "trade/add";
     }
 
+    /**
+     * Adds and validates trade and redirect to list
+     * @param trade trade to validate and add
+     * @param result _
+     * @param model _
+     * @return trade list url
+     */
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         this.tradeService.addTrade(trade);
@@ -41,10 +61,17 @@ public class TradeController {
         return "redirect:/trade/list";
     }
 
+    /**
+     * Displays the update form for trade
+     * @param id id of the trade to update
+     * @param model spring model
+     * @return url of the trade update form
+     */
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         var existingTrade = this.tradeService.getTrade(id);
         if (existingTrade.isEmpty()) {
+            // No matching entity found
             return "redirect:/errors/404";
         }
 
@@ -53,11 +80,20 @@ public class TradeController {
         return "trade/update";
     }
 
+    /**
+     * Validates and updates a trade
+     * @param id id of the trade to update
+     * @param trade updated trade entity
+     * @param result _
+     * @param model _
+     * @return result url
+     */
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
         var existingTrade = this.tradeService.getTrade(id);
         if (existingTrade.isEmpty()) {
+            // No matching entity found
             return "redirect:/errors/404";
         }
 
@@ -66,10 +102,17 @@ public class TradeController {
         return "redirect:/trade/list";
     }
 
+    /**
+     * Deletes a trade based on its id
+     * @param id id of the trade to delete
+     * @param model _
+     * @return result url
+     */
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         var existingTrade = this.tradeService.getTrade(id);
         if (existingTrade.isEmpty()) {
+            // No matching entity found
             return "redirect:/errors/404";
         }
 

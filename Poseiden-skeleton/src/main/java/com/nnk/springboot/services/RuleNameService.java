@@ -28,7 +28,7 @@ public class RuleNameService implements IRuleNameService {
     }
 
     public RuleName addRuleName(RuleName ruleName) {
-        ruleName.setId(-1);
+        ruleName.setId(-1);  // This is to ensure a new entity
         return this.ruleNameRepository.save(ruleName);
     }
 

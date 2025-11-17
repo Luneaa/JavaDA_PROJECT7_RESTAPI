@@ -45,10 +45,21 @@ public class UserControllerTests {
     @Test
     void validate() {
         User user = new User();
-        user.setPassword("test");
+        user.setPassword("Test1234!");
 
         assertEquals("redirect:/user/list", this.userController.validate(user, bindingResult, model));
         verify(this.userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void validatePasswordError() {
+        User user = new User();
+        user.setPassword("Test1");
+
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        assertEquals("user/add", this.userController.validate(user, bindingResult, model));
+        verify(this.userRepository, times(0)).save(any(User.class));
     }
 
     @Test
@@ -77,10 +88,22 @@ public class UserControllerTests {
     @Test
     void updateUser() {
         User user = new User();
-        user.setPassword("test");
+        user.setPassword("Test1234!");
 
         assertEquals("redirect:/user/list", this.userController.updateUser(0, user, bindingResult, model));
         verify(this.userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void updateUserPasswordError() {
+        User user = new User();
+        // Password too short and without symbols
+        user.setPassword("Test1");
+
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        assertEquals("user/update", this.userController.updateUser(0, user, bindingResult, model));
+        verify(this.userRepository, times(0)).save(any(User.class));
     }
 
     @Test

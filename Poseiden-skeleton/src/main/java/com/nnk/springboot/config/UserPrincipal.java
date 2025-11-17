@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * User definition for spring security
+ */
 public class UserPrincipal implements UserDetails {
     private final User user;
 

@@ -28,7 +28,7 @@ public class TradeService implements ITradeService {
     }
 
     public Trade addTrade(Trade trade) {
-        trade.setTradeId(-1);
+        trade.setTradeId(-1);  // This is to ensure a new entity
         return this.tradeRepository.save(trade);
     }
 

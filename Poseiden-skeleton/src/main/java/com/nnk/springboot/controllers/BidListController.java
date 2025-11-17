@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 
 
+/**
+ *  Controller for bid lists
+ */
 @Controller
 @RequiredArgsConstructor
 public class BidListController {
@@ -23,6 +26,13 @@ public class BidListController {
 
     private final IBidListService bidListService;
 
+
+    /**
+     * Displays the list of bid lists
+     *
+     * @param model Spring model
+     * @return bidList list url
+     */
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
@@ -33,11 +43,24 @@ public class BidListController {
         return "bidList/list";
     }
 
+    /**
+     *  Displays the add form for bidLists
+     *
+     * @param bid _
+     * @return bidList add form url
+     */
     @GetMapping("/bidList/add")
     public String addBidForm(BidList bid) {
         return "bidList/add";
     }
 
+    /**
+     * Adds and validate bidList and redirect to list
+     * @param bid bidList to validate and add
+     * @param result _
+     * @param model _
+     * @return BidList list url
+     */
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         this.bidListService.addBidList(bid);
@@ -45,11 +68,18 @@ public class BidListController {
         return REDIRECT_BID_LIST_LIST;
     }
 
+    /**
+     * Displays the update form for bidList
+     * @param id id of the bidList to update
+     * @param model spring model
+     * @return url of the bidList update form
+     */
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         var bidList = this.bidListService.getBidList(id);
 
         if (bidList.isEmpty()) {
+            // No matching entity found
             return REDIRECT_ERRORS_404;
         }
 
@@ -58,11 +88,20 @@ public class BidListController {
         return "/bidList/update";
     }
 
+    /**
+     * Validates and update a bidList
+     * @param id id of the bidList to update
+     * @param bidList updated bidList entity
+     * @param result _
+     * @param model _
+     * @return result url
+     */
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
         var existingBidList = this.bidListService.getBidList(id);
         if (existingBidList.isEmpty()) {
+            // No matching entity found
             return REDIRECT_ERRORS_404;
         }
 
@@ -71,10 +110,17 @@ public class BidListController {
         return REDIRECT_BID_LIST_LIST;
     }
 
+    /**
+     * Deletes a bidList based on its id
+     * @param id id of the bidList to delete
+     * @param model _
+     * @return result url
+     */
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         var bidList = this.bidListService.getBidList(id);
         if (bidList.isEmpty()) {
+            // No matching entity found
             return REDIRECT_ERRORS_404;
         }
 
