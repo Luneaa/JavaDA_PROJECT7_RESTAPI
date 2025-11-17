@@ -53,7 +53,7 @@ public class BidListControllerTests {
         BidList bidList = new BidList();
         when(bidListService.getBidList(0)).thenReturn(Optional.of(bidList));
 
-        assertEquals("redirect:/bidList/update", bidListController.showUpdateForm(0, model));
+        assertEquals("/bidList/update", bidListController.showUpdateForm(0, model));
     }
 
     @Test

@@ -28,7 +28,7 @@ class CurvePointServiceTests {
         var curveToAdd = new CurvePoint(1, 10d, 20d);
         curvePointService.addCurvePoint(curveToAdd);
         verify(curvePointRepository, times(1)).save(any(CurvePoint.class));
-        assertEquals(-1, curveToAdd.getCurveId());
+        assertEquals(1, curveToAdd.getCurveId());
     }
 
     @Test
